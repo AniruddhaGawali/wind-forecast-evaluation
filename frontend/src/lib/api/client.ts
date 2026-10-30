@@ -1,6 +1,10 @@
 import type { AnalysisParams, MetricsResponse, SensitivityResponse, SeriesResponse } from "./types";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
+// Where the API lives. Unset in a production build means the same origin: on Vercel, /api/* on the
+// dashboard's own domain is routed to the backend service. `next dev` defaults to the local backend.
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ??
+  (process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000" : "");
 /** Give up on a request after this long so the user gets an error and a retry button, not a spinner forever. */
 const TIMEOUT_MS = 20_000;
 

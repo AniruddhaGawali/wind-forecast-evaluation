@@ -23,7 +23,7 @@ const summary = {
 const coverage = { expected: 0, scored: 0, skipped: 0, missing_forecast: 0, missing_actual: 0 };
 
 function fakeResponse(url: string) {
-  const path = new URL(url).pathname;
+  const path = new URL(url, location.origin).pathname;
   const body =
     path === "/api/v1/series"
       ? { cutoff: "09:00", start: "", end: "", coverage, points: [] }
@@ -47,7 +47,7 @@ function fakeResponse(url: string) {
 
 const cutoffsRequested = (fetchMock: ReturnType<typeof vi.fn>, path: string) =>
   fetchMock.mock.calls
-    .map(([url]) => new URL(url as string))
+    .map(([url]) => new URL(url as string, location.origin))
     .filter((u) => u.pathname === path)
     .map((u) => u.searchParams.get("cutoff"));
 
