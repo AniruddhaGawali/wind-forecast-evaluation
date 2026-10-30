@@ -1,0 +1,21 @@
+# One command runs the whole portal: docker compose up --build
+# Dashboard: http://localhost:3000  API docs: http://localhost:8000/docs
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      # The dashboard is opened from the host browser at port 3000.
+      WIND_ALLOWED_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+    ports:
+      - "3000:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
