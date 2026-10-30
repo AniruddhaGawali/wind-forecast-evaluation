@@ -42,7 +42,7 @@ export function DateRangePicker({ start, end, onChange }: Props) {
   }
 
   return (
-    <div className="grid gap-1.5">
+    <div className="grid w-full gap-1.5 sm:w-auto">
       <Label htmlFor="date-range">Delivery dates (UTC)</Label>
       <Popover
         open={open}
@@ -53,7 +53,11 @@ export function DateRangePicker({ start, end, onChange }: Props) {
       >
         <PopoverTrigger
           render={
-            <Button id="date-range" variant="outline" className="w-72 justify-start font-normal" />
+            <Button
+              id="date-range"
+              variant="outline"
+              className="w-full justify-start font-normal sm:w-72"
+            />
           }
         >
           <CalendarIcon />

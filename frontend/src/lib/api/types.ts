@@ -69,6 +69,18 @@ export interface MetricsResponse {
   recommendation: { buffer_mw: number | null; text: string };
 }
 
+export interface SensitivityRow extends Summary {
+  cutoff: string; // HH:MM, UK time on D-1
+  coverage: Coverage;
+  buffer_mw: number | null;
+}
+
+export interface SensitivityResponse {
+  start: string;
+  end: string;
+  results: SensitivityRow[]; // earliest cutoff first
+}
+
 /** What every analysis request needs. */
 export interface AnalysisParams {
   start: string; // YYYY-MM-DD

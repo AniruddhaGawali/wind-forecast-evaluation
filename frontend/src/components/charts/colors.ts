@@ -6,4 +6,5 @@ export const COLORS = {
   bias: "#94a3b8",
 } as const;
 
-export const MW_AXIS = { type: "value", name: "MW", nameGap: 12 } as const;
+/** Tooltip formatter shared by every MW chart: 4098.4 -> "4,098 MW". */
+export const mwTooltip = (v: number) => `${Math.round(v).toLocaleString("en-GB")} MW`;

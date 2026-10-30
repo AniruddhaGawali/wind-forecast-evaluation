@@ -3,21 +3,26 @@
 import { useMemo } from "react";
 
 import type { SeriesPoint } from "@/lib/api/types";
+import { utcDay } from "@/lib/dates";
 
-import { COLORS } from "./colors";
+import { COLORS, mwTooltip } from "./colors";
 import { EChart, type EChartsOption } from "./echart";
 
 /** Signed error per hour. Above zero = forecast too high. */
-export function ErrorTimeChart({ points }: { points: SeriesPoint[] }) {
+export function ErrorTimeChart({
+  points,
+  onDayClick,
+}: {
+  points: SeriesPoint[];
+  /** Called with the UTC day (YYYY-MM-DD) of the clicked hour. */
+  onDayClick?: (day: string) => void;
+}) {
   const option = useMemo<EChartsOption>(
     () => ({
       animation: false,
       color: [COLORS.error],
       grid: { left: 64, right: 24, top: 16, bottom: 40 },
-      tooltip: {
-        trigger: "axis",
-        valueFormatter: (v: number) => `${Math.round(v).toLocaleString("en-GB")} MW`,
-      },
+      tooltip: { trigger: "axis", valueFormatter: mwTooltip },
       xAxis: { type: "time" },
       yAxis: { type: "value", name: "Error (MW)", nameLocation: "middle", nameGap: 48 },
       dataZoom: [{ type: "inside" }],
@@ -38,5 +43,12 @@ export function ErrorTimeChart({ points }: { points: SeriesPoint[] }) {
     }),
     [points],
   );
-  return <EChart option={option} className="h-64 w-full" />;
+  return (
+    <EChart
+      option={option}
+      label="Forecast error for each hour over the selected dates"
+      className="h-64 w-full"
+      onClickX={onDayClick && ((x) => onDayClick(utcDay(x)))}
+    />
+  );
 }

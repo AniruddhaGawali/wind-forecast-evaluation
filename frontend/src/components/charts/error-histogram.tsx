@@ -32,5 +32,11 @@ export function ErrorHistogram({ bins }: { bins: HistogramBin[] }) {
     }),
     [bins],
   );
-  return <EChart option={option} className="h-64 w-full" />;
+  return (
+    <EChart
+      option={option}
+      label="Histogram of forecast errors in 0.5 GW bands"
+      className="h-64 w-full"
+    />
+  );
 }

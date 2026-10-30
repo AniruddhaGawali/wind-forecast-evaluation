@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 import type { HourRow } from "@/lib/api/types";
 
-import { COLORS } from "./colors";
+import { COLORS, mwTooltip } from "./colors";
 import { EChart, type EChartsOption } from "./echart";
 
 /** Typical miss and bias for each hour of the day. */
@@ -15,10 +15,7 @@ export function HourlyErrorChart({ rows }: { rows: HourRow[] }) {
       color: [COLORS.error, COLORS.bias],
       grid: { left: 56, right: 16, top: 40, bottom: 48 },
       legend: { top: 0 },
-      tooltip: {
-        trigger: "axis",
-        valueFormatter: (v: number) => `${Math.round(v).toLocaleString("en-GB")} MW`,
-      },
+      tooltip: { trigger: "axis", valueFormatter: mwTooltip },
       xAxis: {
         type: "category",
         data: rows.map((r) => String(r.hour).padStart(2, "0")),
@@ -34,5 +31,11 @@ export function HourlyErrorChart({ rows }: { rows: HourRow[] }) {
     }),
     [rows],
   );
-  return <EChart option={option} className="h-64 w-full" />;
+  return (
+    <EChart
+      option={option}
+      label="Typical miss and bias by hour of day, UTC"
+      className="h-64 w-full"
+    />
+  );
 }
