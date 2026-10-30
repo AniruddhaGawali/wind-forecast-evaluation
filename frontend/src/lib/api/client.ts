@@ -1,4 +1,4 @@
-import type { RawResponse } from "./types";
+import type { AnalysisParams, MetricsResponse, SeriesResponse } from "./types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -26,6 +26,10 @@ async function get<T>(path: string, params: Record<string, string>): Promise<T> 
   return response.json() as Promise<T>;
 }
 
-export function fetchRaw(start: string, end: string): Promise<RawResponse> {
-  return get<RawResponse>("/api/v1/raw", { start, end });
+export function fetchSeries(params: AnalysisParams): Promise<SeriesResponse> {
+  return get<SeriesResponse>("/api/v1/series", { ...params });
+}
+
+export function fetchMetrics(params: AnalysisParams): Promise<MetricsResponse> {
+  return get<MetricsResponse>("/api/v1/metrics", { ...params });
 }

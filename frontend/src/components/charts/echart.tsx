@@ -1,8 +1,9 @@
 "use client";
 
-import { LineChart, ScatterChart } from "echarts/charts";
+import { BarChart, LineChart } from "echarts/charts";
 import {
   DataZoomComponent,
+  MarkLineComponent,
   GridComponent,
   LegendComponent,
   TooltipComponent,
@@ -13,8 +14,9 @@ import { useEffect, useRef } from "react";
 
 // Register only the parts we use, to keep the bundle small.
 echarts.use([
+  BarChart,
   LineChart,
-  ScatterChart,
+  MarkLineComponent,
   GridComponent,
   TooltipComponent,
   LegendComponent,

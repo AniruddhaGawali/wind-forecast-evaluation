@@ -19,3 +19,10 @@ CHUNK_DAYS = 7
 REQUEST_TIMEOUT_S = 30.0
 MAX_RETRIES = 3
 DEFAULT_CUTOFF = "09:00"
+
+# Browser origins allowed to call the API (the Next.js dev server by default).
+ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
+
+# Delivery days and the decision cutoff are defined in UK local time, then converted to UTC.
+UK_TZ = "Europe/London"
+SENSITIVITY_CUTOFFS = ["06:00", "09:00", "10:00", "12:00", "18:00"]
