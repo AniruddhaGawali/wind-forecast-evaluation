@@ -12,8 +12,8 @@ def client() -> Iterator[TestClient]:
         yield c
 
 
-def test_hello_world(client: TestClient) -> None:
-    assert client.get("/").json() == {"message": "Hello World"}
+def test_index_points_to_docs(client: TestClient) -> None:
+    assert client.get("/").json()["docs"] == "/docs"
 
 
 def test_health(client: TestClient) -> None:

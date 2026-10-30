@@ -23,7 +23,7 @@ class SeriesPoint(BaseModel):
 class Coverage(BaseModel):
     expected: int = Field(description="Hours in the date range")
     scored: int = Field(description="Hours with both a forecast and an actual")
-    skipped: int
+    skipped: int = Field(description="expected - scored")
     missing_forecast: int = Field(
         description="Hours with no forecast published before the cutoff"
     )
@@ -31,15 +31,15 @@ class Coverage(BaseModel):
 
 
 class SeriesResponse(BaseModel):
-    cutoff: str
-    start: str
-    end: str
+    cutoff: str = Field(description="Decision time on D-1, UK time, HH:MM")
+    start: str = Field(description="First delivery date, inclusive")
+    end: str = Field(description="Last delivery date, inclusive")
     coverage: Coverage
     points: list[SeriesPoint]
 
 
 class Summary(BaseModel):
-    n: int
+    n: int = Field(description="Hours scored")
     mae: float | None = Field(description="Mean absolute error, MW")
     rmse: float | None = Field(description="Root mean square error, MW")
     bias: float | None = Field(
@@ -72,20 +72,20 @@ class LevelRow(Summary):
 class HistogramBin(BaseModel):
     lo: float = Field(description="Lower edge of the error bin, MW (inclusive)")
     hi: float = Field(description="Upper edge, MW (exclusive)")
-    count: int
+    count: int = Field(description="Hours whose error falls in this bin")
 
 
 class Recommendation(BaseModel):
     buffer_mw: int | None = Field(
         description="P90 absolute error rounded up to a whole MW"
     )
-    text: str
+    text: str = Field(description="The recommendation as one plain-English sentence")
 
 
 class MetricsResponse(BaseModel):
-    cutoff: str
-    start: str
-    end: str
+    cutoff: str = Field(description="Decision time on D-1, UK time, HH:MM")
+    start: str = Field(description="First delivery date, inclusive")
+    end: str = Field(description="Last delivery date, inclusive")
     coverage: Coverage
     summary: Summary
     by_hour_of_day: list[HourRow]
@@ -94,3 +94,19 @@ class MetricsResponse(BaseModel):
     by_generation_level: list[LevelRow]
     error_histogram: list[HistogramBin]
     recommendation: Recommendation
+
+
+class SensitivityRow(Summary):
+    cutoff: str = Field(description="Decision time on D-1, UK time, HH:MM")
+    coverage: Coverage
+    buffer_mw: int | None = Field(
+        description="P90 absolute error rounded up to a whole MW"
+    )
+
+
+class SensitivityResponse(BaseModel):
+    start: str = Field(description="First delivery date, inclusive")
+    end: str = Field(description="Last delivery date, inclusive")
+    results: list[SensitivityRow] = Field(
+        description="One row per cutoff, earliest first"
+    )

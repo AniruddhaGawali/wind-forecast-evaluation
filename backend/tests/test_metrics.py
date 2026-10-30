@@ -97,3 +97,7 @@ def test_error_histogram_bins() -> None:
         {"lo": 1000.0, "hi": 1500.0, "count": 1},
     ]
     assert metrics.error_histogram(scored([])) == []
+
+
+def test_percentile_of_nothing_is_none() -> None:
+    assert metrics.percentile(pd.Series(dtype=float), 0.9) is None
